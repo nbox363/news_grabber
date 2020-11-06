@@ -22,8 +22,8 @@ class NewsSite:
                 }
 
     def _get_news(self) -> Generator[dict, None, None]:
-        xml_nods = self._get_xml_nods()
-        for item in xml_nods.iter('item'):
+        xml_root = self._get_xml_root()
+        for item in xml_root.iter('item'):
             yield {
                 'title': item.find('title').text,
                 'link': item.find('link').text,
@@ -31,14 +31,14 @@ class NewsSite:
                 'published': item.find('pubDate').text
             }
 
-    def _get_xml_nods(self) -> Element:
+    def _get_xml_root(self) -> Element:
         g = Grab()
         resp = g.go(self.url)
         xml_file_obj = io.StringIO(resp.unicode_body())
         xml_parser = ET.XMLParser(encoding="utf-8")
         xml_tree = ET.parse(xml_file_obj, parser=xml_parser)
-        xml_nods = xml_tree.getroot()
-        return xml_nods
+        xml_root = xml_tree.getroot()
+        return xml_root
 
 
 class Lenta(NewsSite):

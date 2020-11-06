@@ -5,7 +5,7 @@ lenta = Lenta()
 news = lenta.news(limit=2)
 url = news[0]['link']
 data = lenta.grub(url)
-print(data)
+
 
 interfax = Interfax()
 news = interfax.news(limit=2)
