@@ -7,7 +7,7 @@ It's an app that has been created as a test-task for "Out of Cloud" company
 ```bash
 # clone the repository
 $ git clone https://github.com/nbox363/news_grabber.git
-# cd news_grabber
+$ cd news_grabber
 ```
 
 Create a virtualenv and activate it:
