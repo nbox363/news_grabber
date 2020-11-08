@@ -5,7 +5,6 @@ It's an app that has been created as a test-task for "Out of Cloud" company
 # Install 
 
 ```bash
-# clone the repository
 $ git clone https://github.com/nbox363/news_grabber.git
 $ cd news_grabber
 ```
@@ -18,9 +17,10 @@ $ . venv/bin/activate
 
 Install pip packages:
 ```bash
-# install newspaper
-$ pip3 install newspaper3k
-# install requests 
-$ pip install requests
+$ pip install -r requirements.txt
 ```
 
+# Test
+```bash
+$ python test.py
+```
