@@ -1,8 +1,8 @@
-from abc import abstractmethod
 import io
 import requests
 import xml.etree.ElementTree as ET
-from abc import ABC
+
+from abc import ABC, abstractmethod
 from newspaper import Article
 from typing import Generator
 from xml.etree.ElementTree import Element
