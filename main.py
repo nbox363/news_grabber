@@ -3,6 +3,7 @@ from grabber import Lenta, Interfax, Kommersant, M24
 
 lenta = Lenta()
 news = lenta.news(limit=2)
+print(news)
 url = news[0]['link']
 data = lenta.grub(url)
 

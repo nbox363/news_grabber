@@ -1,13 +1,13 @@
 import io
+import requests
 import xml.etree.ElementTree as ET
-from grab import Grab
 from newspaper import Article
 from typing import Generator
 from xml.etree.ElementTree import Element
 
 
 class NewsSite:
-    def news(self, limit=5) -> list:
+    def news(self, limit=1) -> list:
         news = self._get_news()
         return [next(news) for _ in range(limit)]
 
@@ -22,19 +22,20 @@ class NewsSite:
                 }
 
     def _get_news(self) -> Generator[dict, None, None]:
+        """Parse xml and yield headers"""
         xml_root = self._get_xml_root()
         for item in xml_root.iter('item'):
             yield {
                 'title': item.find('title').text,
                 'link': item.find('link').text,
-                'desc': item.find('description').text,
+                'desc': item.find('description').text.strip(),
                 'published': item.find('pubDate').text
             }
 
     def _get_xml_root(self) -> Element:
-        g = Grab()
-        resp = g.go(self.url)
-        xml_file_obj = io.StringIO(resp.unicode_body())
+        """Go to the internet for xml and return xml root"""
+        resp = requests.get(self.url)
+        xml_file_obj = io.StringIO(resp.text)
         xml_parser = ET.XMLParser(encoding="utf-8")
         xml_tree = ET.parse(xml_file_obj, parser=xml_parser)
         xml_root = xml_tree.getroot()

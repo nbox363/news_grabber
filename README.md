@@ -18,9 +18,9 @@ $ . venv/bin/activate
 
 Install pip packages:
 ```bash
-# install grab
-$ pip install -U setuptools pip
-$ pip install -U grab
 # install newspaper
 $ pip3 install newspaper3k
+# install requests 
+$ pip install requests
 ```
+
