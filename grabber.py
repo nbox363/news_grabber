@@ -1,12 +1,18 @@
+from abc import abstractmethod
 import io
 import requests
 import xml.etree.ElementTree as ET
+from abc import ABC
 from newspaper import Article
 from typing import Generator
 from xml.etree.ElementTree import Element
 
 
-class NewsSite:
+class NewsGrabber(ABC):
+    @abstractmethod
+    def get_url() -> str:
+        raise NotImplementedError
+
     def news(self, limit=1) -> list:
         news = self._get_news()
         return [next(news) for _ in range(limit)]
@@ -22,7 +28,7 @@ class NewsSite:
                 }
 
     def _get_news(self) -> Generator[dict, None, None]:
-        """Parse xml and yield headers"""
+        """Walks through xml tree and yields dict for every item node"""
         xml_root = self._get_xml_root()
         for item in xml_root.iter('item'):
             yield {
@@ -33,8 +39,8 @@ class NewsSite:
             }
 
     def _get_xml_root(self) -> Element:
-        """Go to the internet for xml and return xml root"""
-        resp = requests.get(self.url)
+        """Goes to the internet for xml and return xml root"""
+        resp = requests.get(self.get_url())
         xml_file_obj = io.StringIO(resp.text)
         xml_parser = ET.XMLParser(encoding="utf-8")
         xml_tree = ET.parse(xml_file_obj, parser=xml_parser)
@@ -42,17 +48,25 @@ class NewsSite:
         return xml_root
 
 
-class Lenta(NewsSite):
-    url = 'http://lenta.ru/rss'
+class Lenta(NewsGrabber):
+    def get_url(self):
+        return 'http://lenta.ru/rss'
 
 
-class Interfax(NewsSite):
-    url = 'http://www.interfax.ru/rss.asp'
+class Interfax(NewsGrabber):
+    def get_url(self):
+        return 'http://www.interfax.ru/rss.asp'
 
 
-class Kommersant(NewsSite):
-    url = 'http://www.kommersant.ru/RSS/news.xml'
+class Kommersant(NewsGrabber):
+    def get_url(self):
+        return 'http://www.kommersant.ru/RSS/news.xml'
 
 
-class M24(NewsSite):
-    url = 'http://www.m24.ru/rss.xml'
+class M24(NewsGrabber):
+    def get_url(self):
+        return 'http://www.m24.ru/rss.xml'
+
+
+lenta = Lenta()
+news = lenta.news(limit=2)

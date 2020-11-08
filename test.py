@@ -1,6 +1,6 @@
 import requests
 import unittest
-from grabber import NewsSite
+from grabber import NewsGrabber
 from unittest.mock import patch
 
 xml_example = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -40,9 +40,10 @@ expected_output = [{
 }]
 
 
-class News(NewsSite):
-    # url attr is not used in test but requred by source code
-    url = 'does_not_matter'
+class News(NewsGrabber):
+    # this methid implemented to satisfy NewsGrabber interface but not used in test due to mock
+    def get_url(self) -> str:
+        return ''
 
 
 def my_requests_get(_url):
