@@ -36,9 +36,8 @@ expected_output = [{
     'title': 'Title',
     'link': 'https://google.com',
     'desc': 'Description.',
-    'published': 'Thu, 05 Nov 2020 20:19:19 +0300'
+    'published': '2020.11.05 20:19'
 }]
-
 
 class News(NewsGrabber):
     # this methid implemented to satisfy NewsGrabber interface but not used in test due to mock

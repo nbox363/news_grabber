@@ -22,5 +22,5 @@ $ pip install -r requirements.txt
 
 # Test
 ```bash
-$ python test.py
+$ python -m unittest test
 ```

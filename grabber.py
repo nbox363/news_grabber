@@ -1,3 +1,4 @@
+from datetime import datetime
 import io
 import requests
 import xml.etree.ElementTree as ET
@@ -35,7 +36,7 @@ class NewsGrabber(ABC):
                 'title': item.find('title').text,
                 'link': item.find('link').text,
                 'desc': item.find('description').text.strip(),
-                'published': item.find('pubDate').text
+                'published': self._format_datetime(item.find('pubDate').text)
             }
 
     def _get_xml_root(self) -> Element:
@@ -46,6 +47,12 @@ class NewsGrabber(ABC):
         xml_tree = ET.parse(xml_file_obj, parser=xml_parser)
         xml_root = xml_tree.getroot()
         return xml_root
+
+    @staticmethod
+    def _format_datetime(date):
+        d = str(datetime.strptime(date, '%a, %d %b %Y %H:%M:%S %z')).rsplit(
+            ':', 2)[0].replace('-', '.')
+        return d
 
 
 class Lenta(NewsGrabber):
@@ -66,7 +73,3 @@ class Kommersant(NewsGrabber):
 class M24(NewsGrabber):
     def get_url(self):
         return 'http://www.m24.ru/rss.xml'
-
-
-lenta = Lenta()
-news = lenta.news(limit=2)
