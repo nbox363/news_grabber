@@ -1,9 +1,9 @@
-from datetime import datetime
 import io
 import requests
 import xml.etree.ElementTree as ET
 
 from abc import ABC, abstractmethod
+from datetime import datetime
 from newspaper import Article
 from typing import Generator
 from xml.etree.ElementTree import Element
